@@ -8,14 +8,17 @@ public class JoyconDemo : MonoBehaviour {
 
     // Values made available via Unity
     public float[] stick;
+    
     public Vector3 gyro;
+    
     public Vector3 accel;
+    
     public int jc_ind = 0;
+    
     public Quaternion orientation;
 
     private Renderer _renderer;
-    private Rigidbody _rigidbody;
-
+    
     public float speed = 10;
 
     void Start ()
@@ -30,7 +33,6 @@ public class JoyconDemo : MonoBehaviour {
 		}
 
 		_renderer = GetComponent<Renderer>();
-		_rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -113,29 +115,8 @@ public class JoyconDemo : MonoBehaviour {
 			{
 				_renderer.material.color = Color.red;
 			}
-			else{
-				_renderer.material.color = Color.blue;
-			}
-			
-			switch (jc_ind)
-			{
-				case 0:
-					FirstMove();
-					break;
-				case 1:
-					SecondMove();
-					break;
-			}
-        }
 
-		void FirstMove()
-		{
-			_rigidbody.velocity = new Vector3(stick[1] * speed, _rigidbody.velocity.y,-stick[0] * speed);
-		}
+        }
 		
-		void SecondMove()
-		{
-			_rigidbody.velocity = new Vector3(-stick[1] * speed, _rigidbody.velocity.y,stick[0] * speed);
-		}
     }
 }
