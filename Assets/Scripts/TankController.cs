@@ -75,11 +75,14 @@ public class TankController : MonoBehaviour
 
     #region Unity CallBack Function
 
+    private void Awake()
+    {
+        _input = GetComponent<JoyconInputHandler>();
+    }
+
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        
-        _input = GetComponent<JoyconInputHandler>();
 
         _input.OnClickSlEvent += OnSlButton;
         
@@ -199,9 +202,15 @@ public class TankController : MonoBehaviour
 
     void RollPlayer1()
     {
-        rollDirectionPlayer1 = _directionPlayer1;
-        
-        _rigidbody.AddForce(new Vector3(rollDirectionPlayer1.x,rollDirectionPlayer1.y,rollDirectionPlayer1.z) * rollSpeed,ForceMode.Impulse);
+        if (_directionPlayer1 != Vector3.zero)
+        {
+            _rigidbody.AddForce(_directionPlayer1 * rollSpeed,ForceMode.Impulse);
+        }
+        else
+        {
+            _rigidbody.AddForce(transform.forward * rollSpeed,ForceMode.Impulse);
+
+        }
         
         _canRollPlayer1 = true;
         
@@ -211,10 +220,16 @@ public class TankController : MonoBehaviour
     
     void RollPlayer2()
     {
-        rollDirectionPlayer2 = _directionPlayer2;
-        
-        _rigidbody.AddForce(new Vector3(rollDirectionPlayer2.x,rollDirectionPlayer2.y,rollDirectionPlayer2.z) * rollSpeed,ForceMode.Impulse);
-        
+        if (_directionPlayer2 != Vector3.zero)
+        {
+            _rigidbody.AddForce(_directionPlayer2 * rollSpeed,ForceMode.Impulse);
+        }
+        else
+        {
+            _rigidbody.AddForce(transform.forward * rollSpeed,ForceMode.Impulse);
+
+        }
+
         _canRollPlayer2 = true;
 
         StartCoroutine(RollDelayPlayer2());
@@ -222,12 +237,13 @@ public class TankController : MonoBehaviour
     }
     #endregion
 
-    #region ShootPlayer1 Function
+    #region Shoot Function
 
     void ShootPlayer1()
     {
         Debug.Log("ShootPlayer1");
         Instantiate(bulletGo, firePointTransform.position, firePointTransform.rotation);
+        _canShootPlayer1 = true;
         StartCoroutine(ShootDelayPlayer1());
     }
     
@@ -235,6 +251,7 @@ public class TankController : MonoBehaviour
     {
         Debug.Log("ShootPlayer2");
         Instantiate(bulletGo, firePointTransform.position, firePointTransform.rotation);
+        _canShootPlayer2 = true;
         StartCoroutine(ShootDelayPlayer2());
     }
     void OnDpadUpButton()
@@ -279,7 +296,5 @@ public class TankController : MonoBehaviour
     }
 
     #endregion
-
-  
-
+    
 }
