@@ -27,8 +27,6 @@ public class TankController : MonoBehaviour
     [Space] 
     public float delayShoot;
 
-
-    
     [Space]
     [Header("Tank Renderer Reference")]
     [Space]
@@ -36,7 +34,8 @@ public class TankController : MonoBehaviour
 
     
     #region Private Reference
-    
+
+    private Health _health;
     
     private Rigidbody _rigidbody;
 
@@ -78,10 +77,13 @@ public class TankController : MonoBehaviour
     private void Awake()
     {
         _input = GetComponent<JoyconInputHandler>();
+        
     }
 
     void Start()
     {
+        _health = GetComponent<Health>();
+        
         _rigidbody = GetComponent<Rigidbody>();
 
         _input.OnClickSlEvent += OnSlButton;
@@ -89,6 +91,8 @@ public class TankController : MonoBehaviour
         _input.OnClickDpadUpEvent += OnDpadDownButton;
         
         _input.OnClickDpadDownEvent += OnDpadUpButton;
+
+        _health.GetDamage += GetDamage;
 
 
         switch (_input.jc_ind)
@@ -99,6 +103,14 @@ public class TankController : MonoBehaviour
             
             case 1:
                 _renderer.material.color = Color.green;
+                break;
+            
+            case 2:
+                _renderer.material.color = Color.blue;
+                break;
+                
+            case 3:
+                _renderer.material.color = Color.red;
                 break;
                 
         }
@@ -120,6 +132,14 @@ public class TankController : MonoBehaviour
                 break;
             
             case 1:
+                MovePlayer2();
+                break;
+            
+            case 2 : 
+                MovePlayer1();
+                break;
+            
+            case 3:
                 MovePlayer2();
                 break;
         }
@@ -184,6 +204,21 @@ public class TankController : MonoBehaviour
                     RollPlayer2();
                 }
                 break;
+            
+            case 2:
+                if (!_canRollPlayer1)
+                {
+                    RollPlayer1();
+                }
+                break;
+            
+            case 3:
+                if (!_canRollPlayer2)
+                {
+                    RollPlayer2();
+                }
+                break;
+
         }
     }
 
@@ -264,6 +299,13 @@ public class TankController : MonoBehaviour
                     ShootPlayer2();
                 }
                 break;
+            
+            case 3:
+                if (!_canShootPlayer2)
+                {
+                    ShootPlayer2();
+                }
+                break;
 
         }
     }
@@ -273,6 +315,13 @@ public class TankController : MonoBehaviour
         switch (_input.jc_ind)
         {
             case 0:
+                if (!_canShootPlayer1)
+                {
+                    ShootPlayer1();
+                }
+                break;
+            
+            case 2:
                 if (!_canShootPlayer1)
                 {
                     ShootPlayer1();
@@ -297,4 +346,12 @@ public class TankController : MonoBehaviour
 
     #endregion
     
+    #region Health Function
+
+    void GetDamage()
+    {
+        Debug.Log("mdrr je me suis fait shooter ");
+    }
+    
+    #endregion
 }

@@ -9,7 +9,6 @@ public class JoyconInputHandler : MonoBehaviour {
 	
 	[HideInInspector]
 	public float[] stick;
-	[HideInInspector]
 	public int jc_ind = 0;
 
     #region Unity Action Call
@@ -37,7 +36,6 @@ public class JoyconInputHandler : MonoBehaviour {
 		if (joycons.Count > 0)
         {
 			Joycon j = joycons [jc_ind];
-
 			
 			if (j.GetButtonDown(Joycon.Button.DPAD_DOWN))
 			{

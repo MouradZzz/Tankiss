@@ -28,6 +28,15 @@ public class Bullet : MonoBehaviour
     {
         _rigidbody.AddForce(transform.up * bulletSpeed, ForceMode.Impulse);
     }
-    
-    
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        var t = collision.collider.GetComponent<Damageable>();
+
+        if (t)
+        {
+            t.InflictDamage(1);
+            Destroy(gameObject);
+        }
+    }
 }
